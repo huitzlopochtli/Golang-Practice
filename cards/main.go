@@ -5,7 +5,6 @@ func main() {
 
 	cards.shuffle()
 
-	cards.dealHands()
-
 	cards.print()
+
 }

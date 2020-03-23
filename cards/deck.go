@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math/rand"
+	"os"
 	"strings"
 	"time"
 )
@@ -34,34 +35,26 @@ func (d deck) print() {
 	}
 }
 
+// Shuffle/Randomize an Array
+func (d deck) shuffle() {
+	check := [52]int{0}
+	for i := range d {
+		rand.Seed(time.Now().UnixNano())
+		newPosition := rand.Intn(len(d) - 1)
+		for check[newPosition] != 0 {
+			newPosition = rand.Intn(52)
+		}
+		check[newPosition] = 1
+		d[i], d[newPosition] = d[newPosition], d[i]
+	}
+}
+
 func (d deck) deal(handSize int) (deck, deck) {
 	return d[:handSize], d[handSize:]
 }
 
-// Shuffle/Randomize an Array
-func (d *deck) shuffle() {
-	check := [52]int{0}
-	mainDeck := *d
-	shuffled := deck{}
-
-	for range mainDeck {
-		rand.Seed(time.Now().UnixNano())
-		randNum := rand.Intn(52)
-		for check[randNum] != 0 {
-			randNum = rand.Intn(52)
-		}
-		check[randNum] = 1
-		shuffled = append(shuffled, mainDeck[randNum])
-	}
-	*d = shuffled
-}
-
 func (d deck) toString() string {
 	return strings.Join([]string(d), ", ")
-}
-
-func (d deck) saveToFile(filename string) error {
-	return ioutil.WriteFile(filename, []byte(d.toString()), 0666)
 }
 
 func (d *deck) dealHands() {
@@ -71,4 +64,18 @@ func (d *deck) dealHands() {
 		handFilename := fmt.Sprintf("hand%d.txt", i+1)
 		hand.saveToFile(handFilename)
 	}
+}
+
+func (d deck) saveToFile(filename string) error {
+	return ioutil.WriteFile(filename, []byte(d.toString()), 0666)
+}
+
+func newDeckFromFile(filename string) deck {
+	byteSlice, err := ioutil.ReadFile(filename)
+	if err != nil {
+		fmt.Println("Error:", err)
+		os.Exit(1)
+	}
+	stringDeck := strings.Split(string(byteSlice), ", ")
+	return deck(stringDeck)
 }
