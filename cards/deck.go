@@ -54,7 +54,7 @@ func (d deck) deal(handSize int) (deck, deck) {
 }
 
 func (d deck) toString() string {
-	return strings.Join([]string(d), ", ")
+	return strings.Join([]string(d), "\n")
 }
 
 func (d *deck) dealHands() {
@@ -76,6 +76,6 @@ func newDeckFromFile(filename string) deck {
 		fmt.Println("Error:", err)
 		os.Exit(1)
 	}
-	stringDeck := strings.Split(string(byteSlice), ", ")
+	stringDeck := strings.Split(string(byteSlice), "\n")
 	return deck(stringDeck)
 }
