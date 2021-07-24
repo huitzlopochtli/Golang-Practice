@@ -52,11 +52,11 @@ func TOTP(secret string, digits int, timeref int64, timestep int64) string {
 }
 
 func main() {
-	url := "https://api.challenge.hennge.com/challenges/003"
+	url := "remote_url"
 	content_type := "application/json"
-	userid := "khondokar.hash@gmail.com"
-	secret_suffix := "HENNGECHALLENGE003"
-	git_gist := "https://gist.github.com/peeyalk/fb7820c38a6077a79877d129e1ae33e9"
+	userid := "email"
+	secret_suffix := "suffix"
+	git_gist := "gist_url"
 	shared_secret := userid + secret_suffix
 	password_digit := 10
 	timeref := 0
