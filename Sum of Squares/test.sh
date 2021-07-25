@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/zsh
 
 num_of_test=$1
 echo $num_of_test 
